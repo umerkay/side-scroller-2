@@ -35,7 +35,7 @@ function init_sub(index, gr) {
   message = "";
   mode = "player";
   grid = gr || 50;
-  fps = 60;
+  fps = 50;
   levelNo = index;
   console.log(levelNo);
 
