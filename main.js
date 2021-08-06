@@ -35,7 +35,7 @@ function init_sub(index, gr) {
   message = "";
   mode = "player";
   grid = gr || 50;
-  fps = 50;
+  fps = !keyBank ? 50 : 60;
   levelNo = index;
   console.log(levelNo);
 
@@ -227,5 +227,12 @@ function PublishScore(time, name) {
       name,
       time,
       timestamp: new Date().toLocaleDateString(),
+      fps,
+      frames0,
+      keyLog,
+      v: "2.02",
+      timeAlive: player.timeAlive,
+      x: player.x,
+      y: player.y,
     });
 }
