@@ -13,8 +13,10 @@ for (i = 1; i < level.length; i++) {
 LevelCompleted = false;
 
 function setup() {
-  w = document.documentElement.clientWidth - 30;
-  h = document.documentElement.clientHeight - 30;
+  // w = document.documentElement.clientWidth - 30;
+  // h = document.documentElement.clientHeight - 30;
+  w = window.innerWidth - 30;
+  h = window.innerHeight - 30;
   width = w;
   height = h;
   if (h < 600) {
@@ -42,8 +44,6 @@ function init_sub(index, gr) {
     let input = window.prompt("Custom level data:");
     level[levelNo].tiles = JSON.parse(input);
   }
-
-  
 
   //player2 = new Player(level[levelNo].startX(), level[levelNo].startY());
   friction = 0.9;
@@ -183,6 +183,9 @@ function getTile(x, y) {
   return tiles[Math.floor(x / grid)][Math.floor(y / grid)];
 }
 function getTileId(x, y) {
+  if (y > h / zoom) {
+    return ids[16];
+  }
   if (x < 0 || x > maxX || y < 0 || y > h / zoom) {
     return ids[1];
   }
