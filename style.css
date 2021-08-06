@@ -1,0 +1,96 @@
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+js {
+  position: absolute;
+}
+#jsrt,
+#jslt {
+  position: absolute;
+  width: 40vw;
+  height: 40vh;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+#data {
+  display: flex;
+  flex-direction: column;
+  /* height: 240px; */
+  width: 375;
+  align-items: center;
+  justify-content: center;
+}
+.dataC {
+  border-radius: 1rem;
+  border: 5px solid #efc323;
+  /* color: black; */
+  /* background-color: rgba(255, 255, 255, 0.212); */
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px #a58718;
+}
+#data .score {
+  display: grid;
+  grid-template-columns: 25px 300px 50px;
+}
+#data > :first-child {
+  padding-top: 1rem;
+  color: gold;
+}
+#data > :nth-child(2) {
+  color: silver;
+}
+
+#data > :nth-child(3) {
+  color: rgb(214, 78, 24);
+  margin-bottom: 1rem;
+}
+
+#data .score span {
+}
+
+#name {
+  width: 200px;
+}
+
+#jsrt {
+  right: 0px;
+  bottom: 0px;
+}
+#jslt {
+  left: 0px;
+  bottom: 0px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+}
+
+#main {
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%); */
+}
+#header {
+  position: absolute;
+  top: 0%;
+  left: 100%;
+  transform: translateX(-100%) translateY(0%);
+}
+#footer {
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  transform: translateX(-100%) translateY(-100%);
+}
+table,
+td,
+tr {
+  text-align: right;
+}
+.mainDb {
+}
