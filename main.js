@@ -15,8 +15,8 @@ LevelCompleted = false;
 function setup() {
   // w = document.documentElement.clientWidth - 30;
   // h = document.documentElement.clientHeight - 30;
-  w = window.innerWidth - 30;
-  h = window.innerHeight - 30;
+  w = document.documentElement.clientWidth - 30;
+  h = document.documentElement.clientHeight - 30;
   width = w;
   height = h;
   if (h < 600) {
