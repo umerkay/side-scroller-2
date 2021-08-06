@@ -20,7 +20,7 @@ function Player(x, y) {
   this.angle = 0;
   this.stroke = this.w / 10;
   this.color2 = "#34ff2d";
-  this.name = document.getElementById("name").value;
+  this.name = document.getElementById("name")?.value;
 
   //this.sCapy = 10;
   this.draw = function () {

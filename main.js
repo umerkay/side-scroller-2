@@ -5,6 +5,7 @@ b1Text = "Play";
 editText("b1", "Play");
 doPause = false;
 message = "";
+mode = "play";
 
 for (i = 1; i < level.length; i++) {
   addButton("header", "L" + i, "init(" + i + ");", orientation);
@@ -35,7 +36,7 @@ function init_sub(index, gr) {
   message = "";
   mode = "player";
   grid = gr || 50;
-  fps = !keyBank ? 50 : 60;
+  fps = 50;
   levelNo = index;
   console.log(levelNo);
 

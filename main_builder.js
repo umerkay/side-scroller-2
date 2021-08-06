@@ -5,6 +5,7 @@ b1Text = "Play";
 editText("b1", "Play");
 message = "";
 doPause = false;
+mode = "builder";
 
 for (i = 0; i < level.length; i++) {
   addButton("header", "L" + i, "init(" + i + ");", orientation);
@@ -20,7 +21,6 @@ function setup() {
 }
 function init_sub(index) {
   doPause = false;
-  mode = "builder";
   grid = 50;
   fps = 10;
   levelNo = index;

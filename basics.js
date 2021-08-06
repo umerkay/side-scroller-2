@@ -13,7 +13,7 @@ b1Text = "Init";
 toRemove = [];
 
 function init(index) {
-  if (!document.getElementById("name").value) {
+  if (mode != "builder" && !document.getElementById("name").value) {
     alert("Enter your name!");
     return;
   }
