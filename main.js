@@ -230,7 +230,7 @@ function PublishScore(time, name) {
       timestamp: new Date().toLocaleDateString(),
       fps,
       frames0,
-      keyLog,
+      keyLog: JSON.stringify(keyLog),
       v: "2.02",
       timeAlive: player.timeAlive,
       x: player.x,
