@@ -220,20 +220,32 @@ function colTri(P, A, B, C) {
 }
 
 function PublishScore(time, name) {
-  db.collection("highscores")
-    .doc("level" + levelNo)
-    .collection("scores")
-    .doc()
-    .set({
-      name,
-      time,
-      timestamp: new Date().toLocaleTimeString(),
-      fps,
-      frames0,
-      keyLog: JSON.stringify(keyLog),
-      v: "2.02",
-      timeAlive: player.timeAlive,
-      x: player.x,
-      y: player.y,
-    });
+  let confirm = null;
+  count = 0;
+  while (confirm !== "NO" && confirm !== "YES" && count < 5) {
+    count++;
+    confirm = window.prompt(
+      "Type YES if you wish to publish your score " +
+        time +
+        "s, otherwise type NO"
+    );
+  }
+  if (confirm === "YES") {
+    db.collection("highscores")
+      .doc("level" + levelNo)
+      .collection("scores")
+      .doc()
+      .set({
+        name,
+        time,
+        timestamp: new Date().toUTCString(),
+        fps,
+        frames0,
+        keyLog: JSON.stringify(keyLog),
+        v: "2.02",
+        timeAlive: player.timeAlive,
+        x: player.x,
+        y: player.y,
+      });
+  }
 }
