@@ -223,7 +223,7 @@ function PublishScore(time, name) {
   db.collection("highscores")
     .doc("level" + levelNo)
     .collection("scores")
-    .doc()
+    .doc(name)
     .set({
       name,
       time,
