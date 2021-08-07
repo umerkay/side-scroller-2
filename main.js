@@ -242,8 +242,8 @@ function PublishScore(time, name) {
         fps,
         frames0,
         keyLog: JSON.stringify(keyLog),
-        v: "2.04",
-        player,
+        v: "2.05",
+        player: JSON.stringify(player),
       });
   }
 }
