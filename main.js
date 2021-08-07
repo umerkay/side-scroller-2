@@ -242,10 +242,8 @@ function PublishScore(time, name) {
         fps,
         frames0,
         keyLog: JSON.stringify(keyLog),
-        v: "2.02",
-        timeAlive: player.timeAlive,
-        x: player.x,
-        y: player.y,
+        v: "2.04",
+        player,
       });
   }
 }
