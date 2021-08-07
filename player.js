@@ -60,6 +60,15 @@ function Player(x, y) {
     frameCount = 0;
     if (keyBank) keys.active = [];
     keyLog = [];
+    if (keys.active[keys.up])
+      keyLog.push({ frameCount: 0, keyCode: keys.up, event: "keydown" });
+    if (keys.active[keys.down])
+      keyLog.push({ frameCount: 0, keyCode: keys.down, event: "keydown" });
+    if (keys.active[keys.right])
+      keyLog.push({ frameCount: 0, keyCode: keys.right, event: "keydown" });
+    if (keys.active[keys.left])
+      keyLog.push({ frameCount: 0, keyCode: keys.left, event: "keydown" });
+
     keyBank = null;
     LevelCompleted = false;
   };

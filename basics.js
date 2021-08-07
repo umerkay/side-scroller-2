@@ -13,6 +13,7 @@ b1Text = "Init";
 toRemove = [];
 
 function init(index) {
+  ctx1.imageSmoothingEnabled = false;
   if (mode != "builder" && !document.getElementById("name").value) {
     alert("Enter your name!");
     return;

@@ -227,7 +227,7 @@ function PublishScore(time, name) {
     .set({
       name,
       time,
-      timestamp: new Date().toLocaleDateString(),
+      timestamp: new Date().toLocaleTimeString(),
       fps,
       frames0,
       keyLog: JSON.stringify(keyLog),
