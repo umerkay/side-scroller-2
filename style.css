@@ -14,13 +14,14 @@ js {
   height: 40vh;
   background-color: rgba(255, 255, 255, 0.05);
 }
-#data {
+.data {
   display: flex;
   flex-direction: column;
-  /* height: 240px; */
-  width: 375;
+  /* height: 300px; */
+  overflow-y: auto;
+  min-width: 375;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
 }
 .dataC {
   border-radius: 1rem;
@@ -31,24 +32,24 @@ js {
   border-radius: 15px;
   box-shadow: 0 4px #a58718;
 }
-#data .score {
+.data .score {
   display: grid;
   grid-template-columns: 25px 300px 50px;
 }
-#data > :first-child {
+.data > :first-child {
   padding-top: 1rem;
   color: gold;
 }
-#data > :nth-child(2) {
+.data > :nth-child(2) {
   color: silver;
 }
 
-#data > :nth-child(3) {
+.data > :nth-child(3) {
   color: rgb(214, 78, 24);
   margin-bottom: 1rem;
 }
 
-#data .score span {
+.data .score span {
 }
 
 #name {

@@ -166,18 +166,20 @@ function Player(x, y) {
       this.vely = 0;
       // this.y = y - (y % grid) + grid;
     }
-    if (
-      getTileId(x, y + this.h).doesCollide(x % grid, (y + this.h) % grid) ||
+    let bottom = [
+      getTileId(x, y + this.h).doesCollide(x % grid, (y + this.h) % grid),
       getTileId(x + this.w, y + this.h).doesCollide(
         (x + this.w) % grid,
         (y + this.h) % grid
-      ) ||
+      ),
       getTileId(x + this.w / 2, y + this.h).doesCollide(
         (x + this.w / 2) % grid,
         (y + this.h) % grid
-      )
-    ) {
-      this.vely = 0;
+      ),
+    ];
+    if (bottom[0] || bottom[1] || bottom[2]) {
+      // let slimey = !!bottom.filter((b) => tiles[b].slimey).length;
+      this.vely = false ? -this.sCapx : 0;
       this.grounded = true;
       this.angle = Math.ceil(this.angle / 90) * 90;
       this.y = y - ((y + this.h) % grid);

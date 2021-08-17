@@ -701,10 +701,30 @@ ids = [
   }, //19 Lava inflow
   {
     isFull: true,
-    draw: function (x, y, w, h, i, j) {},
+    draw: function (x, y, w, h, i, j) {
+      if (mode === "builder") {
+        ctx1.globalAlpha = 0.1;
+        fillRect(ctx1, x, y, w, h, "white");
+        ctx1.globalAlpha = 1;
+      }
+    },
     doesCollide: function (x, y, ax) {
       return false;
     },
     doesKill: false,
   }, //Invisible Untouchable Base Block
+  {
+    isFull: true,
+    side: "top",
+    slimey: true,
+    draw: function (x, y, w, h, i, j) {
+      t = tiles[i][j];
+      fillRect(ctx1, x, y, w, h / 2, level[levelNo].colorB);
+      fillRect(ctx1, x, y + w / 10, w, h / 10, "white");
+    },
+    doesCollide: function (x, y, ax) {
+      return y < grid / 2;
+    },
+    doesKill: false,
+  }, //1 Base block
 ];

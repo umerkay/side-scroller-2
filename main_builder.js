@@ -90,12 +90,17 @@ function keyPressed(key) {
   } else if (key == keys.left) {
     camX = Math.max(camX - 50, 0);
   }
-  if (String.fromCharCode(key) >= 0) {
-    //console.log(key);
-    //mouse.id = String.fromCharCode(key);
-    document.getElementById("blockID").value = String.fromCharCode(key);
+  if (document.activeElement !== document.getElementById("blockID")) {
+    if (String.fromCharCode(key) >= 0) {
+      document.getElementById("blockID").value = String.fromCharCode(key);
+    }
+    if (shortcuts[String.fromCharCode(key).toLocaleLowerCase()]) {
+      document.getElementById("blockID").value =
+        shortcuts[String.fromCharCode(key).toLocaleLowerCase()];
+    }
   }
 }
+const shortcuts = { w: 10, l: 15, v: 20 };
 function getTile(x, y) {
   //return (((y-(y%grid))/grid)*(width/grid))+(((x-(x%grid))/grid));
   // console.log(x,y,tiles[Math.floor(x/grid)][Math.floor(y/grid)]);

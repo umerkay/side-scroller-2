@@ -11,6 +11,8 @@ var fps, fpsInterval, startTime, now, then, elapsed;
 orientation = 1;
 b1Text = "Init";
 toRemove = [];
+if (document.getElementById("name"))
+  document.getElementById("name").value = localStorage.getItem("name");
 
 function init(index) {
   ctx1.imageSmoothingEnabled = false;
@@ -18,6 +20,8 @@ function init(index) {
     alert("Enter your name!");
     return;
   }
+  if (mode != "builder")
+    localStorage.setItem("name", document.getElementById("name").value);
   frameCount = 0;
   for (i = 1; i < level.length; i++) {
     removeButton("L" + i);

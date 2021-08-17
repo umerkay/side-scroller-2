@@ -219,6 +219,43 @@ function colTri(P, A, B, C) {
   return u >= 0 && v >= 0 && u + v < 1;
 }
 
+async function PublishBestScore(time, name) {
+  if (levelNo !== 0 && !levelNo) return console.log("Do not cheat, man");
+  let lastScore = null;
+  let docRef = db
+    .collection("bestscores")
+    .doc("level" + levelNo)
+    .collection("scores")
+    .doc(name);
+  docSnapshot = await docRef.get();
+  if (docSnapshot.exists) {
+    lastScore = docSnapshot.data().time;
+  }
+  if (lastScore && time > lastScore) {
+    message =
+      "You, " +
+      this.name +
+      ", took " +
+      time +
+      "s! Your best is " +
+      lastScore +
+      "s.";
+  } else {
+    docRef.set({
+      name,
+      time,
+      timestamp: new Date().toUTCString(),
+      fps,
+      frames0,
+      keyLog: JSON.stringify(keyLog),
+      v: "2.05",
+      player: JSON.stringify(player),
+    });
+    message =
+      "You, " + this.name + ", took " + time + "s! This is your new best.";
+  }
+}
+
 function PublishScore(time, name) {
   let confirm = null;
   count = 0;
@@ -234,7 +271,7 @@ function PublishScore(time, name) {
     db.collection("highscores")
       .doc("level" + levelNo)
       .collection("scores")
-      .doc()
+      .doc(name)
       .set({
         name,
         time,

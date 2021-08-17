@@ -68,7 +68,7 @@ function is_touch_enabled() {
   );
 }
 
-if (is_touch_enabled()) {
+if (is_touch_enabled() && document.getElementById("js")) {
   managerLT = nipplejs.create(optionsLT);
   managerRT = nipplejs.create(optionsRT);
   managerLT.on("plain:up", () => {
@@ -108,7 +108,7 @@ if (is_touch_enabled()) {
     keys.active[keys.right] = false;
     keys.active[keys.left] = false;
   });
-} else {
+} else if (document.getElementById("js")) {
   document.getElementById("jsrt").style = "display: none;";
   document.getElementById("jslt").style = "display: none;";
 }
