@@ -184,7 +184,7 @@ function getTile(x, y) {
   return tiles[Math.floor(x / grid)][Math.floor(y / grid)];
 }
 function getTileId(x, y) {
-  if (y > h / zoom) {
+  if (y > h / zoom || y/grid > tiles[0].length) {
     return ids[16];
   }
   if (x < 0 || x > maxX || y < 0 || y > h / zoom) {
@@ -234,7 +234,7 @@ async function PublishBestScore(time, name) {
   if (lastScore && time > lastScore) {
     message =
       "You, " +
-      this.name +
+      name +
       ", took " +
       time +
       "s! Your best is " +
@@ -252,8 +252,9 @@ async function PublishBestScore(time, name) {
       player: JSON.stringify(player),
     });
     message =
-      "You, " + this.name + ", took " + time + "s! This is your new best.";
+      "You, " + name + ", took " + time + "s! This is your new best.";
   }
+  setMessage();
 }
 
 function PublishScore(time, name) {

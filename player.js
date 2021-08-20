@@ -13,8 +13,8 @@ function Player(x, y) {
   this.vely = 0;
   this.color = "#4171f4";
   //this.color = "red";
-  this.sx = 2;
-  this.sCapx = 10;
+  this.sx = levelNo > 2 ? 4 : 2;
+  this.sCapx = levelNo > 2 ? 20 : 10;
   this.sy = 9;
   this.grounded = false;
   this.angle = 0;
@@ -52,7 +52,7 @@ function Player(x, y) {
   };
 
   this.respawn = function () {
-    // return;
+    return;
     camsX = camsXd;
     player = "";
     player = new Player(level[levelNo].startX(), level[levelNo].startY());
@@ -116,18 +116,19 @@ function Player(x, y) {
       let time = Math.floor((this.timeAlive / fps) * 1000) / 1000;
       let name = this.name || "Guest#" + ("" + Math.random()).slice(2);
 
-      doPause = true;
       message = keyBank
-        ? "Walkthrough Complete"
-        : "You, " + this.name + ", took " + time + "s! Click to play again";
-      editClick("pause", resume);
-      editText("pause", "►");
+        ? "Walkthrough Complete" : "pending";
 
       if (!keyBank) {
         LevelCompleted = true;
-        PublishScore(time, name);
+        PublishBestScore(time, name);
+        // PublishScore(time, name);
+      } else {
+        setMessage();
       }
-      return;
+      editClick("pause", resume);
+      editText("pause", "►");
+      doPause = true;
     }
 
     if (
@@ -179,8 +180,14 @@ function Player(x, y) {
     ];
     if (bottom[0] || bottom[1] || bottom[2]) {
       // let slimey = !!bottom.filter((b) => tiles[b].slimey).length;
-      this.vely = false ? -this.sCapx : 0;
+      // this.vely = false ? -this.sCapx : 0;
+      if(keys.active[keys.up] && levelNo > 1) {
+        this.vely = -Math.min(this.sy * 6, Math.max(this.vely * 1.1, this.sy * 2));
+        this.grounded = false;
+      } else {
+      this.vely = 0;
       this.grounded = true;
+      }
       this.angle = Math.ceil(this.angle / 90) * 90;
       this.y = y - ((y + this.h) % grid);
     } else {

@@ -4,12 +4,13 @@ let loadingLB2 = true;
 let data2 = [];
 let name = localStorage.getItem("name");
 let lastScore = null;
+let level = 3;
 
 window.addEventListener("load", async () => {
   if (name) {
     let docRef = db
       .collection("bestscores")
-      .doc("level" + 1)
+      .doc("level" + level)
       .collection("scores")
       .doc(name);
     docSnapshot = await docRef.get();
@@ -19,8 +20,8 @@ window.addEventListener("load", async () => {
         "Your personal best is " + lastScore + "s.";
     }
   }
-  db.collection("highscores")
-    .doc("level" + 1)
+  db.collection("bestscores")
+    .doc("level" + level)
     .collection("scores")
     // .where("time", "<=", 30.12)
     .orderBy("time")

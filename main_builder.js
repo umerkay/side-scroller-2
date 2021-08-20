@@ -10,7 +10,12 @@ mode = "builder";
 for (i = 0; i < level.length; i++) {
   addButton("header", "L" + i, "init(" + i + ");", orientation);
   editText("L" + i, i);
-  console.log(i);
+}
+
+let data = JSON.parse(localStorage.getItem("savedBuilderData"));
+if(data) {
+  levelNo = data.levelNo;
+  init(levelNo, data.tiles);
 }
 
 function setup() {
@@ -19,7 +24,7 @@ function setup() {
   width = w;
   height = h;
 }
-function init_sub(index) {
+function init_sub(index, _tiles) {
   doPause = false;
   grid = 50;
   fps = 10;
@@ -29,12 +34,12 @@ function init_sub(index) {
   gravity = 1;
   termVel = 20;
   minX = 0;
-  tiles = level[levelNo].tiles;
+  tiles = _tiles || level[levelNo].tiles;
   maxX = tiles.length * grid;
   //console.log(maxX);
   rows = maxX / grid;
   cols = maxX / grid;
-  camX = 0;
+  camX = data?.camX || 0;
 }
 function update_sub() {
   maxX = tiles.length * grid;
@@ -137,6 +142,16 @@ function mouseClick() {
         //setTile(mouse.x + camX, mouse.y, 0);
       }
     }
+  }
+}
+function mouseUnClick() {
+  if (
+    mouse.x > 0 &&
+    mouse.x < w &&
+    mouse.y > 0 &&
+    mouse.y < height
+  ) {
+  localStorage.setItem("savedBuilderData", JSON.stringify({levelNo, tiles, camX, mouseID: mouse.id}));
   }
 }
 function mouseMoved() {

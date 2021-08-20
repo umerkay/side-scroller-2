@@ -294,7 +294,8 @@ ids = [
       }
       t = tiles[i][j];
       ctx1.globalAlpha = 0.8;
-      fillRect(ctx1, x, y + grid / 10, w, h - grid / 10, "blue");
+      // fillRect(ctx1, x, y + grid / 10, w, h - grid / 10, "blue");
+      fillRect(ctx1, x, y, w, h, "blue");
       ctx1.globalAlpha = 1;
     },
     doesCollide: function (x, y, ax) {
@@ -375,7 +376,7 @@ ids = [
       ctx1.globalAlpha = 0.8;
       ctx1.beginPath();
       ctx1.moveTo(x, y + h);
-      ctx1.lineTo(x + w, y + h / 10);
+      ctx1.lineTo(x + w, y);
       ctx1.lineTo(x + w, y + h);
       ctx1.fillStyle = "blue";
       ctx1.fill();
@@ -408,7 +409,7 @@ ids = [
       t = tiles[i][j];
       ctx1.globalAlpha = 0.8;
       ctx1.beginPath();
-      ctx1.moveTo(x, y + h / 10);
+      ctx1.moveTo(x, y);
       ctx1.lineTo(x, y + h);
       ctx1.lineTo(x + w, y + h);
       ctx1.fillStyle = "blue";
@@ -445,10 +446,10 @@ ids = [
       t = tiles[i][j];
       ctx1.globalAlpha = 0.8;
       ctx1.beginPath();
-      ctx1.moveTo(x, y + h / 10);
+      ctx1.moveTo(x, y);
       ctx1.lineTo(x, y + h);
       ctx1.lineTo(x + w, y + h);
-      ctx1.lineTo(x + w, y + h / 10);
+      ctx1.lineTo(x + w, y);
       ctx1.lineTo(x + w / 2, y + h / 5);
       ctx1.fillStyle = "blue";
       ctx1.fill();

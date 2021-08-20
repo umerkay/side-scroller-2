@@ -14,7 +14,7 @@ toRemove = [];
 if (document.getElementById("name"))
   document.getElementById("name").value = localStorage.getItem("name");
 
-function init(index) {
+function init(index, _tiles) {
   ctx1.imageSmoothingEnabled = false;
   if (mode != "builder" && !document.getElementById("name").value) {
     alert("Enter your name!");
@@ -60,7 +60,7 @@ function init(index) {
   frames = 0;
   t0 = 0;
 
-  init_sub(index);
+  init_sub(index, _tiles);
 
   output("Initiated loop");
   setGameloop(update, fps);
@@ -91,6 +91,12 @@ function update(temp) {
   if (temp != 0 && doPause == false) {
     req = requestAnimationFrame(update);
   } else {
+    if(!message) setMessage("Paused");
+    window.cancelAnimationFrame(req);
+  }
+}
+
+function setMessage() {
     ctx1.globalAlpha = 0.8;
     ctx1.fillStyle = "black";
     ctx1.fillRect(0, 0, w, h);
@@ -99,9 +105,8 @@ function update(temp) {
     ctx1.font = "30px Arial";
     ctx1.globalAlpha = 1;
     ctx1.fillText(message || "Paused", w / 2, h / 2);
-    window.cancelAnimationFrame(req);
-  }
 }
+
 function exit() {
   keyBank = null;
   keyBankIndex = null;
@@ -234,6 +239,7 @@ function addButton(holder, id, click, orientation) {
 function removeButton(id) {
   //console.log(id);
   var element = document.getElementById(id);
+  if(!element) return console.warn("Element not found " + id);
   parent = element.parentNode;
   parent.removeChild(element);
 }
