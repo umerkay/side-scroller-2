@@ -13,8 +13,8 @@ function Player(x, y) {
   this.vely = 0;
   this.color = "#4171f4";
   //this.color = "red";
-  this.sx = levelNo > 2 ? 4 : 2;
-  this.sCapx = levelNo > 2 ? 20 : 10;
+  this.sx = level[levelNo].playerData?.sx || 2;
+  this.sCapx = level[levelNo].playerData?.sCapx || 10;
   this.sy = 9;
   this.grounded = false;
   this.angle = 0;
@@ -116,8 +116,7 @@ function Player(x, y) {
       let time = Math.floor((this.timeAlive / fps) * 1000) / 1000;
       let name = this.name || "Guest#" + ("" + Math.random()).slice(2);
 
-      message = keyBank
-        ? "Walkthrough Complete" : "pending";
+      message = keyBank ? "Walkthrough Complete" : "pending";
 
       if (!keyBank) {
         LevelCompleted = true;
@@ -181,12 +180,15 @@ function Player(x, y) {
     if (bottom[0] || bottom[1] || bottom[2]) {
       // let slimey = !!bottom.filter((b) => tiles[b].slimey).length;
       // this.vely = false ? -this.sCapx : 0;
-      if(keys.active[keys.up] && levelNo > 1) {
-        this.vely = -Math.min(this.sy * 6, Math.max(this.vely * 1.1, this.sy * 2));
+      if (level[levelNo].playerData?.jumpMomentum && keys.active[keys.up]) {
+        this.vely = -Math.min(
+          this.sy * 6,
+          Math.max(this.vely * 1.15, this.sy * 2)
+        );
         this.grounded = false;
       } else {
-      this.vely = 0;
-      this.grounded = true;
+        this.vely = 0;
+        this.grounded = true;
       }
       this.angle = Math.ceil(this.angle / 90) * 90;
       this.y = y - ((y + this.h) % grid);
