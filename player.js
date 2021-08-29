@@ -87,7 +87,7 @@ function Player(x, y) {
 
       keyBank = null;
       LevelCompleted = false;
-    }, 1000);
+    }, 250);
   };
 
   this.updateNew = function () {

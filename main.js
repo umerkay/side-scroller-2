@@ -270,7 +270,7 @@ async function PublishBestScore(time, name) {
       respawn: "" + player.respawn,
       frames0,
       keyLog: JSON.stringify(keyLog),
-      v: "3.01",
+      v: "3.02",
       player: JSON.stringify(player),
       touch: is_touch_enabled()
     });
