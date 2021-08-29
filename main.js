@@ -45,6 +45,7 @@ function init_sub(index, gr) {
     let input = window.prompt("Custom level data:");
     level[levelNo].tiles = JSON.parse(input);
   }
+  particles = [];
 
   //player2 = new Player(level[levelNo].startX(), level[levelNo].startY());
   friction = 0.9;
@@ -64,6 +65,7 @@ function init_sub(index, gr) {
   doPause = false;
 }
 function update_sub() {
+  // keys.active[keys.right] = true;
   if (keyBank) {
     while (keyBank[0]?.frameCount === frameCount) {
       let e = keyBank.shift();
@@ -72,10 +74,13 @@ function update_sub() {
   }
 
   camsX = Math.min(camsX + camaX, player.sCapx * 0.8);
-  player.updateNew();
+  if (player.doUpdate != false) player.updateNew();
+  // else camsX = player.deathvelx;
   camX = Math.floor(
     Math.max(Math.min(player.x + player.w / 2 - w / 2, maxX - w), camX + camsX)
   );
+  particles.forEach(particle => { particle.update(); });
+  particles = particles.filter(particle => particle.life > 0);
 }
 let zoom = 1;
 
@@ -91,6 +96,10 @@ function draw() {
 
   ctx1.fillStyle = "black";
   ctx1.fillRect(0, 0, w, h);
+
+  if (camX >= maxX - w && Math.random() < 0.6) {
+    particles.push(new Particle((maxX) - camX, Math.random() * h, ParticleTypes.Ending));
+  }
 
   if (
     player.hp <= player.maxHP / 2 ||
@@ -116,6 +125,7 @@ function draw() {
       if (getTile(x, y) > 0) {
         //code for drawing the actual boxes is in another file
         ids[getTile(x, y)].draw(x - camX, y, grid, grid, x / grid, y / grid);
+
         if (frames == 0 && ids[getTile(x, y)].update != null) {
           ids[getTile(x, y)].update(
             x - camX,
@@ -145,7 +155,11 @@ function draw() {
   ctx1.fillStyle = "#B10000";
   ctx1.fillRect(w / 2 - 245, 45, (player.hp / player.maxHP) * (500 - 10), 5);
 
+  // if(difficulty < 2)
   player.draw();
+  particles.forEach(particle => {
+    particle.render()
+  });
 
   seconds = level[levelNo].time - Math.floor(player.timeAlive / fps);
   size = 35;
@@ -159,7 +173,7 @@ function draw() {
     size / 2,
     0 - Math.PI / 2,
     (level[levelNo].time - player.timeAlive / fps - seconds) * 2 * Math.PI -
-      Math.PI / 2
+    Math.PI / 2
   );
   ctx1.lineTo(sx, sy);
   ctx1.fill();
@@ -179,13 +193,14 @@ function draw() {
 function exit_sub() {
   document.getElementById("name").style = "display: inline;";
 }
-function keyPressed(key) {}
+function keyPressed(key) { }
 function getTile(x, y) {
   return tiles[Math.floor(x / grid)][Math.floor(y / grid)];
 }
 function getTileId(x, y) {
-  if (y > h / zoom || y/grid > tiles[0].length) {
-    return ids[16];
+  if (y > h / zoom || y / grid > tiles[0].length) {
+    player.respawn();
+    return ids[19];
   }
   if (x < 0 || x > maxX || y < 0 || y > h / zoom) {
     return ids[1];
@@ -220,7 +235,13 @@ function colTri(P, A, B, C) {
 }
 
 async function PublishBestScore(time, name) {
-  if (levelNo !== 0 && !levelNo) return console.log("Do not cheat, man");
+  if (levelNo !== 0 && !levelNo) return console.error(getServerResponse(FireBaseRequest))
+  if (!keyLog || keyLog === null) return console.error(getServerResponse(FireBaseRequest))
+  if (!name) return console.error(getServerResponse(FireBaseRequest))
+  if (!time) return console.error(getServerResponse(FireBaseRequest))
+  if (!player) return console.error(getServerResponse(FireBaseRequest))
+  if (!player.timeAlive) return console.error(getServerResponse(FireBaseRequest))
+  if ((player.x + player.velx + grid < maxX)) return console.error(getServerResponse(FireBaseRequest))
   let lastScore = null;
   let docRef = db
     .collection("bestscores")
@@ -248,7 +269,7 @@ async function PublishBestScore(time, name) {
       fps,
       frames0,
       keyLog: JSON.stringify(keyLog),
-      v: "2.05",
+      v: "3.0",
       player: JSON.stringify(player),
     });
     message =
@@ -264,8 +285,8 @@ function PublishScore(time, name) {
     count++;
     confirm = window.prompt(
       "Type YES if you wish to publish your score " +
-        time +
-        "s, otherwise type NO"
+      time +
+      "s, otherwise type NO"
     );
   }
   if (confirm === "YES") {

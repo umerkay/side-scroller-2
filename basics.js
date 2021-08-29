@@ -1,5 +1,19 @@
 ﻿db1 = document.getElementById("db1");
 ctx1 = db1.getContext("2d");
+
+CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+  if (w < 2 * r) r = w / 2;
+  if (h < 2 * r) r = h / 2;
+  this.beginPath();
+  this.moveTo(x + r, y);
+  this.arcTo(x + w, y, x + w, y + h, r);
+  this.arcTo(x + w, y + h, x, y + h, r);
+  this.arcTo(x, y + h, x, y, r);
+  this.arcTo(x, y, x + w, y, r);
+  this.closePath();
+  return this;
+}
+
 w = 0;
 h = 0;
 db1.width = w;
@@ -91,20 +105,20 @@ function update(temp) {
   if (temp != 0 && doPause == false) {
     req = requestAnimationFrame(update);
   } else {
-    if(!message) setMessage("Paused");
+    if (!message) setMessage("Paused");
     window.cancelAnimationFrame(req);
   }
 }
 
 function setMessage() {
-    ctx1.globalAlpha = 0.8;
-    ctx1.fillStyle = "black";
-    ctx1.fillRect(0, 0, w, h);
-    ctx1.fillStyle = "white";
-    ctx1.textAlign = "center";
-    ctx1.font = "30px Arial";
-    ctx1.globalAlpha = 1;
-    ctx1.fillText(message || "Paused", w / 2, h / 2);
+  ctx1.globalAlpha = 0.8;
+  ctx1.fillStyle = "black";
+  ctx1.fillRect(0, 0, w, h);
+  ctx1.fillStyle = "white";
+  ctx1.textAlign = "center";
+  ctx1.font = "30px Arial";
+  ctx1.globalAlpha = 1;
+  ctx1.fillText(message || "Paused", w / 2, h / 2);
 }
 
 function exit() {
@@ -116,7 +130,7 @@ function exit() {
   //leave beyond this
 
   /*removeButton("pause");
-	removeButton("pauseHolder");*/
+  removeButton("pauseHolder");*/
 
   for (i = 0; i < toRemove.length; i++) {
     removeButton(toRemove[i]);
@@ -239,7 +253,7 @@ function addButton(holder, id, click, orientation) {
 function removeButton(id) {
   //console.log(id);
   var element = document.getElementById(id);
-  if(!element) return console.warn("Element not found " + id);
+  if (!element) return console.warn("Element not found " + id);
   parent = element.parentNode;
   parent.removeChild(element);
 }
@@ -283,22 +297,22 @@ function load(name) {
   img = new Image();
   img.src = name;
   return img;
-  img.onload = function () {};
+  img.onload = function () { };
 }
 function fullScreen() {
   /*newWidth = window.innerWidth;
-	newHeight = height/(width) * newWidth;
+  newHeight = height/(width) * newWidth;
 
-	if(newHeight > window.innerHeight) {
-	newHeight = window.innerHeight;
-	newWidth = width / height * newHeight;
-	}
+  if(newHeight > window.innerHeight) {
+  newHeight = window.innerHeight;
+  newWidth = width / height * newHeight;
+  }
 
-	grid = grid / width * newWidth;
-	w = newWidth; width = w;
-	h = newHeight; height = h;
-	db1.width = w;
-	db1.height = h;
+  grid = grid / width * newWidth;
+  w = newWidth; width = w;
+  h = newHeight; height = h;
+  db1.width = w;
+  db1.height = h;
 
-	init_sub(levelNo, grid);*/
+  init_sub(levelNo, grid);*/
 }

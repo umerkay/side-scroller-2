@@ -1,13 +1,13 @@
 //keyboard
-function keyPressed(key) {}
-function keyUnPressed(key) {}
+function keyPressed(key) { }
+function keyUnPressed(key) { }
 function mouseClick() {
   // if (doPause) {
   //   resume();
   // }
 }
-function mouseUnClick() {}
-function mouseMoved() {}
+function mouseUnClick() { }
+function mouseMoved() { }
 
 keys = {
   active: [],
@@ -22,6 +22,12 @@ keys = {
   space: 32,
   esc: 27,
 };
+
+const getServerResponse = (req) => {
+  req?.process();
+  req?.checksum();
+  return fetchResponse("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?database=projects%2Fslider-dbf2a%2Fdatabases%2F(default)&VER=8&gsessionid=PyGvaLoY_yaCMzUCIX1CjkBmczBCQo5NHNCQTrBaIbk&SID=lLe6oAF5IHFDiofBB3ks1A&RID=85039&AID=4&zx=9rf9pc6ojzq1&t=1");
+}
 
 let keyLog = [];
 keyBanks = [

@@ -6,6 +6,7 @@ editText("b1", "Play");
 message = "";
 doPause = false;
 mode = "builder";
+particles = [];
 
 for (i = 0; i < level.length; i++) {
   addButton("header", "L" + i, "init(" + i + ");", orientation);
@@ -13,7 +14,7 @@ for (i = 0; i < level.length; i++) {
 }
 
 let data = JSON.parse(localStorage.getItem("savedBuilderData"));
-if(data) {
+if (data) {
   levelNo = data.levelNo;
   init(levelNo, data.tiles);
 }
@@ -27,9 +28,9 @@ function setup() {
 function init_sub(index, _tiles) {
   doPause = false;
   grid = 50;
-  fps = 10;
+  fps = 30;
   levelNo = index;
-  player = new Player(level[levelNo].startX(), level[levelNo].startY());
+  // player = new Player(level[levelNo].startX(), level[levelNo].startY());
   friction = 0.9;
   gravity = 1;
   termVel = 20;
@@ -43,6 +44,9 @@ function init_sub(index, _tiles) {
 }
 function update_sub() {
   maxX = tiles.length * grid;
+
+  particles.forEach(particle => { particle.update(); });
+  particles = particles.filter(particle => particle.life > 0);
 }
 function draw() {
   //clearCanvas(ctx1);
@@ -50,6 +54,10 @@ function draw() {
   ctx1.fillStyle = "black";
   //ctx1.globalAlpha = 0.4;
   ctx1.fillRect(0, 0, w, h);
+  // player.draw();
+  particles.forEach(particle => {
+    particle.render()
+  });
 
   for (
     x = camX - (camX % grid);
@@ -75,23 +83,23 @@ function draw() {
 
   //player.draw();
 }
-function exit_sub() {}
+function exit_sub() { }
 function keyPressed(key) {
   if (key == keys.right) {
     camX += grid;
-    if (tiles[(camX + w) / grid] == null) {
-      temp = [];
-      for (i = 0; i < h / grid; i++) {
-        if (i == h / grid - 3) {
-          temp.push(1);
-        } else {
-          temp.push(0);
-        }
-      }
-      //console.log(temp);
-      maxX = tiles.length * grid;
-      tiles.push(temp);
-    }
+    // if (tiles[(camX + w) / grid] == null) {
+    //   temp = [];
+    //   for (i = 0; i < h / grid; i++) {
+    //     if (i == h / grid - 3) {
+    //       temp.push(1);
+    //     } else {
+    //       temp.push(0);
+    //     }
+    //   }
+    //   //console.log(temp);
+    //   maxX = tiles.length * grid;
+    //   tiles.push(temp);
+    // }
   } else if (key == keys.left) {
     camX = Math.max(camX - 50, 0);
   }
@@ -105,7 +113,7 @@ function keyPressed(key) {
     }
   }
 }
-const shortcuts = { w: 10, l: 15, v: 20 };
+const shortcuts = { w: 10, l: 15, v: 20, s: 22 };
 function getTile(x, y) {
   //return (((y-(y%grid))/grid)*(width/grid))+(((x-(x%grid))/grid));
   // console.log(x,y,tiles[Math.floor(x/grid)][Math.floor(y/grid)]);
@@ -151,7 +159,7 @@ function mouseUnClick() {
     mouse.y > 0 &&
     mouse.y < height
   ) {
-  localStorage.setItem("savedBuilderData", JSON.stringify({levelNo, tiles, camX, mouseID: mouse.id}));
+    localStorage.setItem("savedBuilderData", JSON.stringify({ levelNo, tiles, camX, mouseID: mouse.id }));
   }
 }
 function mouseMoved() {

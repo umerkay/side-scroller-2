@@ -35,42 +35,55 @@ function Player(x, y) {
       this.h - this.stroke - 2 * this.stroke
     );
     ctx1.strokeStyle = "white";
-    ctx1.strokeRect(
+    // ctx1.strokeRect(
+    //   this.x - camX + this.stroke / 2,
+    //   this.y + this.stroke / 2,
+    //   this.w - this.stroke,
+    //   this.h - this.stroke
+    // );
+    ctx1.roundRect(
       this.x - camX + this.stroke / 2,
       this.y + this.stroke / 2,
       this.w - this.stroke,
-      this.h - this.stroke
-    );
+      this.h - this.stroke, 5).stroke();
     ctx1.fillStyle = this.color2;
-    ctx1.fillRect(
+    ctx1.roundRect(
       this.x - camX + this.w / 2 - this.stroke,
       this.y + this.h / 2 - this.stroke,
       2 * this.stroke,
-      2 * this.stroke
-    );
+      2 * this.stroke,
+      2
+    ).fill();
     ctx1.restore();
   };
 
   this.respawn = function () {
-    return;
-    camsX = camsXd;
-    player = "";
-    player = new Player(level[levelNo].startX(), level[levelNo].startY());
-    camX = 0;
-    frameCount = 0;
-    if (keyBank) keys.active = [];
-    keyLog = [];
-    if (keys.active[keys.up])
-      keyLog.push({ frameCount: 0, keyCode: keys.up, event: "keydown" });
-    if (keys.active[keys.down])
-      keyLog.push({ frameCount: 0, keyCode: keys.down, event: "keydown" });
-    if (keys.active[keys.right])
-      keyLog.push({ frameCount: 0, keyCode: keys.right, event: "keydown" });
-    if (keys.active[keys.left])
-      keyLog.push({ frameCount: 0, keyCode: keys.left, event: "keydown" });
+    this.doUpdate = false;
+    this.draw = () => { };
+    // this.deathvelx = this.velx;
+    for (let i = 0; i < 10; i++) {
+      particles.push(new Particle(((this.x) - camX) + Math.random() * this.w, this.y + Math.random() * this.h, ParticleTypes.Death));
+    }
 
-    keyBank = null;
-    LevelCompleted = false;
+    setTimeout(() => {
+      camsX = camsXd;
+      player = new Player(level[levelNo].startX(), level[levelNo].startY());
+      camX = 0;
+      frameCount = 0;
+      if (keyBank) keys.active = [];
+      keyLog = [];
+      if (keys.active[keys.up])
+        keyLog.push({ frameCount: 0, keyCode: keys.up, event: "keydown" });
+      if (keys.active[keys.down])
+        keyLog.push({ frameCount: 0, keyCode: keys.down, event: "keydown" });
+      if (keys.active[keys.right])
+        keyLog.push({ frameCount: 0, keyCode: keys.right, event: "keydown" });
+      if (keys.active[keys.left])
+        keyLog.push({ frameCount: 0, keyCode: keys.left, event: "keydown" });
+
+      keyBank = null;
+      LevelCompleted = false;
+    }, 250);
   };
 
   this.updateNew = function () {
@@ -113,6 +126,12 @@ function Player(x, y) {
     y = this.y;
 
     if (this.x + this.w + this.velx >= maxX) {
+      // for (let i = 0; i < 10; i++) {
+      //   particles.push(new Particle(((this.x) - camX) + Math.random() * this.w, this.y + Math.random() * this.h, ParticleTypes.Death));
+      // }
+      // this.doUpdate = false;
+      // this.draw = () => { };
+
       let time = Math.floor((this.timeAlive / fps) * 1000) / 1000;
       let name = this.name || "Guest#" + ("" + Math.random()).slice(2);
 
@@ -185,9 +204,19 @@ function Player(x, y) {
           this.sy * 6,
           Math.max(this.vely * 1.15, this.sy * 2)
         );
+        // if (this.grounded === false) {
+        //   for (let i = 0; i < 3; i++) {
+        //     particles.push(new Particle(((this.x) - camX) + Math.random() * this.w, this.y + this.h, ParticleTypes.Grounded));
+        //   }
+        // }
         this.grounded = false;
       } else {
         this.vely = 0;
+        // if (this.grounded === false) {
+        //   for (let i = 0; i < 3; i++) {
+        //     particles.push(new Particle(((this.x) - camX) + Math.random() * this.w, this.y + this.h, ParticleTypes.Grounded));
+        //   }
+        // }
         this.grounded = true;
       }
       this.angle = Math.ceil(this.angle / 90) * 90;
@@ -196,6 +225,7 @@ function Player(x, y) {
       this.grounded = false;
     }
 
+    const bottomTile = [getTileId(this.x, this.y + this.h + this.vely), getTileId(this.x, this.y + this.h - 1 + this.vely)]
     if (
       getTileId(this.x, this.y + this.h + this.vely).doFloat ||
       getTileId(this.x + this.w, this.y + this.h - 1 + this.vely).doFloat
@@ -208,6 +238,10 @@ function Player(x, y) {
       if (this.breath <= 0) {
         this.breath = 0;
         this.hp--;
+      }
+      if (Math.random() < 0.1 && this.velx * this.vely !== 0) {
+        const type = (bottomTile[0].type === "lava" || bottomTile[1].type === "lava") ? ParticleTypes.LavaSplash : ParticleTypes.WaterSplash
+        particles.push(new Particle(((this.x) - camX) + Math.random() * this.w, this.y + this.h + this.vely, type));
       }
     } else {
       this.breath = Math.min(this.breath + 1, this.maxBreath);

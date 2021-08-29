@@ -4,9 +4,9 @@ let loadingLB2 = true;
 let data2 = [];
 let name = localStorage.getItem("name");
 let lastScore = null;
-let level = 3;
+let level = 1;
 
-window.addEventListener("load", async () => {
+updateData = async () => {
   if (name) {
     let docRef = db
       .collection("bestscores")
@@ -17,7 +17,11 @@ window.addEventListener("load", async () => {
     if (docSnapshot.exists) {
       lastScore = docSnapshot.data().time;
       document.getElementById("pbest").innerHTML =
-        "Your personal best is " + lastScore + "s.";
+        "Your personal best is " + lastScore + "s for Level " + level;
+    } else {
+
+      document.getElementById("pbest").innerHTML =
+        "You haven't completed Level " + level;
     }
   }
   db.collection("bestscores")
@@ -51,6 +55,14 @@ window.addEventListener("load", async () => {
   //       loadingLB2 = false;
   //       data2Updated();
   //     });
+}
+
+window.addEventListener("load", updateData);
+document.getElementById("levelNo").addEventListener("change", (e) => {
+  level = parseInt(e.target.value);
+  loadingLB = true;
+  dataUpdated();
+  updateData();
 });
 
 dataUpdated = () => {
@@ -58,11 +70,14 @@ dataUpdated = () => {
     document.getElementById("data").innerHTML = "Loading...";
   } else if (data) {
     let innerHTML = "";
+    if (data.length == 0) {
+      innerHTML = "Seems like no one has completed this level :)"
+    }
     data.forEach(
       (score, i) =>
-        (innerHTML =
-          innerHTML +
-          `
+      (innerHTML =
+        innerHTML +
+        `
         <div class="score">
             <span class="pos">${i + 1}</span>
             <span class="name">${score.name}</span>

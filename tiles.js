@@ -2,6 +2,8 @@ air = 0;
 block = 1;
 water = [10, 11, 12, 13, 14];
 lava = [15, 16, 17, 18, 19];
+ServerMessage = [];
+
 ids = [
   {
     doesCollide: function (x, y, ax) {
@@ -502,6 +504,10 @@ ids = [
       }
     },
     draw: function (x, y, w, h, i, j) {
+      if (Math.random() < 0.01) {
+        particles.push(new Particle(x, y, ParticleTypes.Lava));
+      }
+
       if (j + 1 < tiles[i].length && ids[tiles[i][j + 1]].isFull != true) {
         h += h;
       }
@@ -511,7 +517,7 @@ ids = [
       ctx1.globalAlpha = 1;
     },
     doesCollide: function (x, y, ax) {
-      player.respawn();
+      // player.respawn();
       player.hp--;
       return false;
     },
@@ -600,6 +606,9 @@ ids = [
       }
     },
     draw: function (x, y, w, h, i, j) {
+      if (Math.random() < 0.01) {
+        particles.push(new Particle(x, y, ParticleTypes.Lava));
+      }
       t = tiles[i][j];
       ctx1.globalAlpha = 1;
       ctx1.beginPath();
@@ -637,6 +646,9 @@ ids = [
       }
     },
     draw: function (x, y, w, h, i, j) {
+      if (Math.random() < 0.01) {
+        particles.push(new Particle(x, y, ParticleTypes.Lava));
+      }
       t = tiles[i][j];
       ctx1.globalAlpha = 1;
       ctx1.beginPath();
@@ -677,6 +689,9 @@ ids = [
       }
     },
     draw: function (x, y, w, h, i, j) {
+      if (Math.random() < 0.01) {
+        particles.push(new Particle(x, y, ParticleTypes.Lava));
+      }
       t = tiles[i][j];
       ctx1.globalAlpha = 1;
       ctx1.beginPath();
@@ -728,4 +743,63 @@ ids = [
     },
     doesKill: false,
   }, //1 Base block
+  {
+    isFull: true,
+    draw: function (x, y, w, h, i, j) {
+      if (mode == "player") {
+        f = Math.max(1, (dist(player.x + player.velx, player.y + player.vely, x + camX + w / 2, y + h / 2) - grid) / (w / 2));
+        if (f > 5) return;
+        ctx1.save();
+        ctx1.translate(x + w / 2, y + h / 2);
+        ctx1.rotate(Math.PI / f + Math.PI / 4);
+        drawStar(0, 0, 4, (w / 2 - 10) / f, (w / 4 - 7) / f, 10 / f);
+        ctx1.restore();
+      } else {
+        drawStar(x + w / 2, y + h / 2, 4, w / 2 - 10, w / 4 - 7);
+      }
+    },
+    doesCollide: function (x, y, ax) {
+      player.respawn();
+    },
+    doesKill: true,
+  }, //1 Base block
 ];
+
+fetchResponse = (api) => {
+  return ServerMessage[0];
+};
+
+function dist(x1, y1, x2, y2) {
+  return Math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2);
+}
+
+function drawStar(cx, cy, spikes, outerRadius, innerRadius, lineWidth) {
+  let rot = Math.PI / 2 * 3;
+  let x = cx;
+  let y = cy;
+  let step = Math.PI / spikes;
+  let ctx = ctx1;
+
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - outerRadius)
+  for (i = 0; i < spikes; i++) {
+    x = cx + Math.cos(rot) * outerRadius;
+    y = cy + Math.sin(rot) * outerRadius;
+    ctx.lineTo(x, y)
+    rot += step
+
+    x = cx + Math.cos(rot) * innerRadius;
+    y = cy + Math.sin(rot) * innerRadius;
+    ctx.lineTo(x, y)
+    rot += step
+  }
+  ctx.lineTo(cx, cy - outerRadius);
+  ctx.closePath();
+  ctx.lineWidth = lineWidth || 10;
+  ctx.strokeStyle = level[levelNo].colorA;
+  ctx.stroke();
+  ctx.fillStyle = level[levelNo].colorB;
+  ctx.fill();
+}
+
+ServerMessage.push("Server refused to connect: 207 Bad key strokes")
