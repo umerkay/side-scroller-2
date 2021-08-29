@@ -58,7 +58,11 @@ function Player(x, y) {
   };
 
   this.respawn = function () {
+    if (this.doUpdate === false) return;
     this.doUpdate = false;
+    this.x = this.fx;
+    this.y = this.fy;
+    this.draw();
     this.draw = () => { };
     // this.deathvelx = this.velx;
     for (let i = 0; i < 10; i++) {
@@ -83,7 +87,7 @@ function Player(x, y) {
 
       keyBank = null;
       LevelCompleted = false;
-    }, 250);
+    }, 1000);
   };
 
   this.updateNew = function () {
@@ -118,12 +122,16 @@ function Player(x, y) {
 
     if (this.x + this.velx + this.w <= camX) {
       this.respawn();
+      return;
     }
 
     //COLLISION DETECTION
 
     x = this.x + this.velx * (30 / fps);
     y = this.y;
+
+    this.fx = x;
+    this.fy = y;
 
     if (this.x + this.w + this.velx >= maxX) {
       // for (let i = 0; i < 10; i++) {
@@ -174,6 +182,10 @@ function Player(x, y) {
 
     x = this.x;
     y = this.y + this.vely * (30 / fps);
+
+    this.fx = x;
+    this.fy = y;
+
     if (
       getTileId(x, y).doesCollide(x % grid, y % grid) ||
       getTileId(x + this.w, y).doesCollide((x + this.w) % grid, y % grid) ||
@@ -249,6 +261,8 @@ function Player(x, y) {
     if (this.grounded == false) {
       this.vely = Math.min(termVel, this.vely + gravity);
     }
+
+    if (this.doUpdate === false) return;
 
     //UPDATE X AND Y VALUES
 

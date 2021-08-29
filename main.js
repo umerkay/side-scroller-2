@@ -267,10 +267,12 @@ async function PublishBestScore(time, name) {
       time,
       timestamp: new Date().toUTCString(),
       fps,
+      respawn: "" + player.respawn,
       frames0,
       keyLog: JSON.stringify(keyLog),
-      v: "3.0",
+      v: "3.01",
       player: JSON.stringify(player),
+      touch: is_touch_enabled()
     });
     message =
       "You, " + name + ", took " + time + "s! This is your new best.";

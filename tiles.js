@@ -749,6 +749,7 @@ ids = [
       if (mode == "player") {
         f = Math.max(1, (dist(player.x + player.velx, player.y + player.vely, x + camX + w / 2, y + h / 2) - grid) / (w / 2));
         if (f > 5) return;
+        if (player.doUpdate === false) f = 1;
         ctx1.save();
         ctx1.translate(x + w / 2, y + h / 2);
         ctx1.rotate(Math.PI / f + Math.PI / 4);
