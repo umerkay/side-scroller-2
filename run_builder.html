@@ -12,7 +12,12 @@
     </div> -->
   <table id="main">
     <tr>
-      <td><canvas id="db1" class="mainDb"></canvas></td>
+      <td>
+        <form action="#" onSubmit="init(1); return false;">
+          <input id="name" placeholder="Enter Name" type="text" class="in" min="0" value="" />
+        </form>
+        <canvas id="db1" class="mainDb"></canvas>
+      </td>
     </tr>
   </table>
   <table id="footer">
@@ -23,7 +28,8 @@
   </table>
   <table id="header">
     <tr id="headerR">
-      <td><button onClick="init()" id="b1">Init</button></td>
+      <!-- <td><button onClick="init()" id="b1">Init</button></td> -->
+      <td><button onClick="init('local')" style="width: 100px;" id="b4">My Level</button></td>
       <td><button onClick="outputTiles()" id="b3">Export</button></td>
       <td>
         <input id="blockID" value="0" type="number" class="in" min="0" />

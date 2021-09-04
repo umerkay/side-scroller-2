@@ -7,6 +7,8 @@ function Player(x, y) {
   this.x = x + this.w / 2;
   this.maxBreath = 120;
   this.breath = this.maxBreath;
+  this.deathSound = new Audio("music/death.mp3");
+  this.deathSound.preload = 'auto';
   // this.y = h/2 - this.h/2;
   this.y = y + this.h / 2;
   this.velx = 0;
@@ -59,6 +61,10 @@ function Player(x, y) {
 
   this.respawn = function () {
     if (this.doUpdate === false) return;
+    // this.deathSound.play();
+    // this.deathSound.currentTime = 0.5;
+    song.currentTime = 1;
+
     this.doUpdate = false;
     this.x = this.fx;
     this.y = this.fy;

@@ -33,6 +33,12 @@ button:hover {
   box-shadow: 0 3px #a58718;
   transform: translateY(2px);
 }
+button:disabled {
+  background-color: #747474;
+  box-shadow: 0 3px #3a3a3a;
+  opacity: 0.5;
+  transform: translateY(2px);
+}
 body {
   color: white;
   background-color: #0c0c0c;

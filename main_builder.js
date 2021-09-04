@@ -14,6 +14,13 @@ for (i = 0; i < level.length; i++) {
 }
 
 let data = JSON.parse(localStorage.getItem("savedBuilderData"));
+let localLevel = JSON.parse(localStorage.getItem("localLevel"));
+
+if (localLevel) {
+  level["local"] = localLevel;
+} else {
+  disableBtn("b4");
+}
 if (data) {
   levelNo = data.levelNo;
   init(levelNo, data.tiles);
@@ -83,7 +90,9 @@ function draw() {
 
   //player.draw();
 }
-function exit_sub() { }
+function exit_sub() {
+  localStorage.removeItem("savedBuilderData");
+}
 function keyPressed(key) {
   if (key == keys.right) {
     camX += grid;

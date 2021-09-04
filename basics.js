@@ -285,7 +285,18 @@ function clearCanvas(ctx) {
 }
 
 function editClass(id, type) {
-  document.getElementById(id).className = type;
+  try {
+    document.getElementById(id).className = type;
+  } catch (err) {
+
+  }
+}
+function disableBtn(id) {
+  try {
+    document.getElementById(id).disabled = true;
+  } catch (err) {
+
+  }
 }
 function rotate(ctx, x, y, w, h, angle) {
   // ctx.save();

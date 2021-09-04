@@ -38,7 +38,6 @@ function init_sub(index, gr) {
   grid = gr || 50;
   fps = 50;
   levelNo = index;
-  console.log(levelNo);
 
   player = new Player(level[levelNo].startX(), level[levelNo].startY());
   if (levelNo === 0 || level[levelNo].tiles === null) {
@@ -63,9 +62,16 @@ function init_sub(index, gr) {
   camsX = camsXd; //4
   camaX = 0.0; //0.01
   doPause = false;
+
+  song = new Audio("/music/lvl2.mp3");
+  song.play();
+  song.currentTime = 1;
 }
+
 function update_sub() {
   // keys.active[keys.right] = true;
+  // song.playbackRate = (player.velx / player.sCapx) / 4 + 1;
+  song.playbackRate = (camX / maxX) / 2 + 1;
   if (keyBank) {
     while (keyBank[0]?.frameCount === frameCount) {
       let e = keyBank.shift();
@@ -192,6 +198,8 @@ function draw() {
 }
 function exit_sub() {
   document.getElementById("name").style = "display: inline;";
+  song.pause();
+
 }
 function keyPressed(key) { }
 function getTile(x, y) {
